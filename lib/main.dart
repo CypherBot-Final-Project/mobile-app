@@ -74,7 +74,11 @@ class MyApp extends StatelessWidget {
           color: Color.fromARGB(255, 73, 109, 128),
           shadowColor: Colors.white,
           child: ExpansionTile(
-            title: Text('Birth of Universe' ,style: TextStyle(color: Colors.white),),
+            leading: Icon(Icons.currency_bitcoin, color: Colors.white,),
+            title: Text(
+              'Bitcoin',
+              style: TextStyle(color: Colors.white),
+            ),
             iconColor: Colors.white,
             children: <Widget>[
               Text('Big Bang'),
@@ -86,13 +90,18 @@ class MyApp extends StatelessWidget {
         ),
         Card(
           color: Color.fromARGB(255, 73, 109, 128),
+          shadowColor: Colors.white,
           child: ExpansionTile(
-            title: Text('Birth of Universe',style: TextStyle(color: Colors.white),),
+            title: Text(
+              'Birth of Universe',
+              style: TextStyle(color: Colors.white),
+            ),
             iconColor: Colors.white,
             children: <Widget>[
               Text('Big Bang'),
               Text('Birth of the Sun'),
               Text('Earth is Born'),
+              Text("I wanna finish Project")
             ],
           ),
         ),
