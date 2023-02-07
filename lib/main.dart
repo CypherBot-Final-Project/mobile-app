@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
     Widget boxSection = Row();
     Color color = const Color.fromARGB(255, 14, 34, 53);
     return MaterialApp(
+        theme: ThemeData(fontFamily: "Oxygen"),
         home: DefaultTabController(
       length: 2,
       child: Scaffold(
