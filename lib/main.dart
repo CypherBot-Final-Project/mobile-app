@@ -69,26 +69,23 @@ class MyApp extends StatelessWidget {
   Center _buildCard() {
     return Center(
         child: Column(
-      children: const [
+      children: [
         Card(
           color: Color.fromARGB(255, 73, 109, 128),
           shadowColor: Colors.white,
           child: ExpansionTile(
-            leading: Icon(Icons.currency_bitcoin, color: Colors.white,),
-            title: Text(
+            leading: const Icon(Icons.currency_bitcoin, color: Colors.white,),
+            title: const Text(
               'Bitcoin',
               style: TextStyle(color: Colors.white),
             ),
             iconColor: Colors.white,
             children: <Widget>[
-              Text('Big Bang'),
-              Text('Birth of the Sun'),
-              Text('Earth is Born'),
-              Text("I wanna finish Project")
+              Image.asset("assets/images/graph.png"),
             ],
           ),
         ),
-        Card(
+        const Card(
           color: Color.fromARGB(255, 73, 109, 128),
           shadowColor: Colors.white,
           child: ExpansionTile(
