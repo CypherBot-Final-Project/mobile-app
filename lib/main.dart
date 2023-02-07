@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         ),
         backgroundColor: color,
         body: TabBarView(
-          children: [_buildCard(), _buildCard()],
+          children: [_buildCard(), Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
         ),
       ),
     ));
