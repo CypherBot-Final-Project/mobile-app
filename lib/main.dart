@@ -36,9 +36,6 @@ class MyApp extends StatelessWidget {
         )
       ],
     );
-
-    Widget menuSection = Row();
-    Widget boxSection = Row();
     Color color = const Color.fromARGB(255, 14, 34, 53);
     return MaterialApp(
         theme: ThemeData(fontFamily: "Oxygen"),
@@ -61,7 +58,7 @@ class MyApp extends StatelessWidget {
         ),
         backgroundColor: color,
         body: TabBarView(
-          children: [_buildCard(), Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
+          children: [_buildCard(), const Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
         ),
       ),
     ));
@@ -72,7 +69,7 @@ class MyApp extends StatelessWidget {
         child: Column(
       children: [
         Card(
-          color: Color.fromARGB(255, 73, 109, 128),
+          color: const Color.fromARGB(255, 73, 109, 128),
           shadowColor: Colors.white,
           child: ExpansionTile(
             leading: const Icon(Icons.currency_bitcoin, color: Colors.white,),
