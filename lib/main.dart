@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -72,22 +73,22 @@ class MyApp extends StatelessWidget {
           color: const Color.fromARGB(255, 73, 109, 128),
           shadowColor: Colors.white,
           child: ExpansionTile(
-            leading: const Icon(Icons.currency_bitcoin, color: Colors.white,),
+            leading: Image.network("https://assets.coingecko.com/coins/images/1/large/bitcoin.png", height: 30, width: 30,),
             title: const Text(
               'Bitcoin',
               style: TextStyle(color: Colors.white),
             ),
             iconColor: Colors.white,
             children: <Widget>[
-              Image.asset("assets/images/graph.png"),
+              Image.network("https://assets.coingecko.com/coins/images/1/small/bitcoin.png"),
             ],
           ),
         ),
-        const Card(
+        Card(
           color: Color.fromARGB(255, 73, 109, 128),
           shadowColor: Colors.white,
           child: ExpansionTile(
-            leading: Icon(Icons.diamond, color: Colors.white,),
+            leading: Image.network("https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880", height: 30, width: 30,),
             title: Text(
               'Etheruem',
               style: TextStyle(color: Colors.white),
