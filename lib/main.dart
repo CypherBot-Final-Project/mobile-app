@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-Future<Asset> fetchAsset() async {
+Future<List> fetchData() async {
   final response = await http
       .get(Uri.parse('https://api.coingecko.com/api/v3/coins/markets?vs_currency=thb'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    Iterable l = json.decode(response.body);
-    return Asset.fromJson(l.first);
+    List result = json.decode(response.body);
+    return result;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -19,14 +19,15 @@ Future<Asset> fetchAsset() async {
   }
 }
 
+
 class Asset {
   String name;
   String image;
-  late int marketCap;
-  late int totalVolume; 
+  late double marketCap;
+  late double totalVolume; 
   late double circulatingSupply; 
-  late int high24hr;
-  late int low24hr;
+  late double high24hr;
+  late double low24hr;
   late int marketCapRank;
   late double priceChange24hr;
 
@@ -45,13 +46,13 @@ class Asset {
     return Asset(
       name: json['name'],
       image: json['image'],
-      marketCap: json['market_cap'],
-      totalVolume: json['total_volume'],
-      circulatingSupply: json['circulating_supply'],
-      high24hr: json['high_24h'],
-      low24hr: json['low_24h'],
+      marketCap: json['market_cap'].toDouble(),
+      totalVolume: json['total_volume'].toDouble(),
+      circulatingSupply: json['circulating_supply'].toDouble(),
+      high24hr: json['high_24h'].toDouble(),
+      low24hr: json['low_24h'].toDouble(),
       marketCapRank: json['market_cap_rank'],
-      priceChange24hr: json['price_change_24h'],
+      priceChange24hr: json['price_change_24h'].toDouble(),
     );
   }
   
@@ -67,12 +68,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late Future<Asset> futureAsset;
+  late Future<List> futureData;
 
   @override
   void initState() {
     super.initState();
-    futureAsset = fetchAsset();
+    futureData = fetchData();
   }
 
     @override
@@ -126,62 +127,53 @@ class _MyAppState extends State<MyApp> {
         ),
         backgroundColor: color,
         body: TabBarView(
-          children: [_buildCard(), Center(child: FutureBuilder<Asset>(
-            future: futureAsset,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Text(snapshot.data!.name);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
-            },
-          ),)],
+          children: [_cardContainer(), Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
         ),
       ),
     ));
   }
 
-  Center _buildCard() {
+  Center _cardContainer() {
+      
     return Center(
-        child: Column(
-      children: [
-        Card(
+        child: FutureBuilder(
+        future: futureData,
+        builder: ((context, snapshot) {
+          List assets = snapshot.data!;
+          return ListView.builder(
+            itemCount: assets.length,
+            itemBuilder: ((context, index) {
+              Asset asset = Asset.fromJson(assets[index]);
+              return _buildCard(asset.name, asset.image, asset.marketCap, asset.totalVolume, asset.circulatingSupply, asset.high24hr, asset.low24hr,asset.marketCapRank, asset.priceChange24hr);
+            })
+            );
+        })
+        ));
+  }
+
+  Card _buildCard(String name, String image ,double marketCap, double totalVolume, double circulatingSupply, double high24hr, double low24hr, int marketCapRank, double priceChange24hr){
+    return Card(
           color: const Color.fromARGB(255, 73, 109, 128),
           shadowColor: Colors.white,
           child: ExpansionTile(
-            leading: Image.network("https://assets.coingecko.com/coins/images/1/large/bitcoin.png", height: 30, width: 30,),
-            title: const Text(
-              'Bitcoin',
+            leading: Image.network(image, height: 30, width: 30,),
+            title: Text(
+              name,
               style: TextStyle(color: Colors.white),
             ),
             iconColor: Colors.white,
             children: <Widget>[
-              Image.network("https://assets.coingecko.com/coins/images/1/small/bitcoin.png"),
+              Text("Market Capital: $marketCap"),
+              Text("Total Volume: $totalVolume"),
+              Text("Circulating Supply: $circulatingSupply"),
+              Text("High price in 24hrs: $high24hr"),
+              Text("Low price in 24hrs: $low24hr"),
+              Text("Market Capital Rank: $marketCapRank"),
+              Text("Prince change in 24hrs: $priceChange24hr"),
             ],
           ),
-        ),
-        Card(
-          color: const Color.fromARGB(255, 73, 109, 128),
-          shadowColor: Colors.white,
-          child: ExpansionTile(
-            leading: Image.network("https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880", height: 30, width: 30,),
-            title: const Text(
-              'Etheruem',
-              style: TextStyle(color: Colors.white),
-            ),
-            iconColor: Colors.white,
-            children: const <Widget>[
-              Text('Big Bang'),
-              Text('Birth of the Sun'),
-              Text('Earth is Born'),
-              Text("I wanna finish Project")
-            ],
-          ),
-        ),
-      ],
-    ));
+        );
   }
+
+
 }
