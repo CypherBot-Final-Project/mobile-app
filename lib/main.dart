@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cypherbot/graph.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,6 +23,7 @@ Future<List> fetchData() async {
 
 class Asset {
   String name;
+  String id;
   String image;
   late double marketCap;
   late double totalVolume; 
@@ -33,6 +35,7 @@ class Asset {
 
   Asset({
       required this.name,
+      required this.id,
       required this.image,
       required this.marketCap,
       required this.totalVolume, 
@@ -45,6 +48,7 @@ class Asset {
   factory Asset.fromJson(Map<String, dynamic> json){
     return Asset(
       name: json['name'],
+      id: json['id'],
       image: json['image'],
       marketCap: json['market_cap'].toDouble(),
       totalVolume: json['total_volume'].toDouble(),
@@ -76,7 +80,7 @@ class _MyAppState extends State<MyApp> {
     futureData = fetchData();
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     Widget titleSection = Row(
       children: [
@@ -127,7 +131,7 @@ class _MyAppState extends State<MyApp> {
         ),
         backgroundColor: color,
         body: TabBarView(
-          children: [_cardContainer(), Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
+          children: [_cardContainer(), const Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
         ),
       ),
     ));
@@ -139,27 +143,40 @@ class _MyAppState extends State<MyApp> {
         child: FutureBuilder(
         future: futureData,
         builder: ((context, snapshot) {
-          List assets = snapshot.data!;
-          return ListView.builder(
-            itemCount: assets.length,
-            itemBuilder: ((context, index) {
-              Asset asset = Asset.fromJson(assets[index]);
-              return _buildCard(asset.name, asset.image, asset.marketCap, asset.totalVolume, asset.circulatingSupply, asset.high24hr, asset.low24hr,asset.marketCapRank, asset.priceChange24hr);
-            })
-            );
-        })
+          if (snapshot.hasData){
+            List assets = snapshot.data!;
+            return ListView.builder(
+              itemCount: assets.length,
+              itemBuilder: ((context, index) {
+                Asset asset = Asset.fromJson(assets[index]);
+                return _buildCard(asset, context);
+              })
+              );
+            }
+          else{
+            return const CircularProgressIndicator();
+          }
+          }
+        )
         ));
   }
 
-  Card _buildCard(String name, String image ,double marketCap, double totalVolume, double circulatingSupply, double high24hr, double low24hr, int marketCapRank, double priceChange24hr){
+  Card _buildCard(Asset asset, BuildContext context){
+    double marketCap = asset.marketCap;
+    double totalVolume = asset.totalVolume;
+    double circulatingSupply = asset.circulatingSupply;
+    double high24hr = asset.high24hr;
+    double low24hr = asset.low24hr;
+    int marketCapRank = asset.marketCapRank;
+    double priceChange24hr = asset.priceChange24hr;
     return Card(
           color: const Color.fromARGB(255, 73, 109, 128),
           shadowColor: Colors.white,
           child: ExpansionTile(
-            leading: Image.network(image, height: 30, width: 30,),
+            leading: Image.network(asset.image, height: 30, width: 30,),
             title: Text(
-              name,
-              style: TextStyle(color: Colors.white),
+              asset.name,
+              style: const TextStyle(color: Colors.white),
             ),
             iconColor: Colors.white,
             children: <Widget>[
@@ -170,6 +187,13 @@ class _MyAppState extends State<MyApp> {
               Text("Low price in 24hrs: $low24hr"),
               Text("Market Capital Rank: $marketCapRank"),
               Text("Prince change in 24hrs: $priceChange24hr"),
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.push( context,
+                  MaterialPageRoute(builder: (context) => Graph(name: asset.id)),
+                  );
+                }, 
+                child: const Text("see graph"))
             ],
           ),
         );
