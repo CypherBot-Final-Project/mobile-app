@@ -5,14 +5,20 @@ import 'dart:async';
 import 'dart:convert';
 
 Future<List> fetchCandle(String name) async {
-  final response = await http.get(Uri.parse("https://api.coingecko.com/api/v3/coins/$name/ohlc?vs_currency=thb&days=7"));
-  if (response.statusCode == 200){
-    List datas = json.decode(response.body);
-    return datas;
+  List datas = [];
+  List<int> days = [1,7,30,365];
+  for (var i = 0; i < days.length; i++){
+    int day = days[i];
+    final response = await http.get(Uri.parse("https://api.coingecko.com/api/v3/coins/$name/ohlc?vs_currency=thb&days=$day"));
+      if (response.statusCode == 200){
+      List data = json.decode(response.body);
+      datas.add(data);
+    }
+    else{
+      throw("Failed to create Graph");
+    }
   }
-  else{
-    throw("Failed to create Graph");
-  }
+  return datas;
 }
 
 class Graph extends StatefulWidget {
@@ -34,33 +40,36 @@ class _GraphState extends State<Graph> {
   Widget build(BuildContext context){
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: Scaffold(
-      appBar: AppBar(
-        title: Text(widget.name),
-        leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ), 
-      ),
-      backgroundColor: const Color.fromARGB(255, 14, 34, 53),
-      body: FutureBuilder(
-        
-        future: futureGraph,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-          List datas = snapshot.data!;
-          return createGraph(datas);
-          }
-          else{
-            return const CircularProgressIndicator();
-          }
-        },
+      home: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.name),
+          leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ), 
+          bottom: const TabBar(
+            tabs:  <Widget>[Tab(text:"today"), Tab(text:"week") , Tab(text:"1 month") , Tab(text:"1 year")],
+            )
         ),
-    )
+        backgroundColor: const Color.fromARGB(255, 14, 34, 53),
+        body: FutureBuilder(
+          future: futureGraph,
+          builder:(context, snapshot) {
+            if (snapshot.hasData){
+              List allData = snapshot.data!;
+              return TabBarView(
+                children: [createGraph(allData[0]), createGraph(allData[1]), createGraph(allData[2]), createGraph(allData[3])]);
+            }
+            else{
+              return const CircularProgressIndicator();
+            }
+          },)
+      ))
     );
 
   }
-
   Candlesticks createGraph(datas){
     List<Candle> candles = [];
     for (var i = datas.length - 1; i >= 0; i--){
