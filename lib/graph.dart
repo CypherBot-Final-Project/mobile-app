@@ -60,6 +60,7 @@ class _GraphState extends State<Graph> {
             if (snapshot.hasData){
               List allData = snapshot.data!;
               return TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
                 children: [createGraph(allData[0]), createGraph(allData[1]), createGraph(allData[2]), createGraph(allData[3])]);
             }
             else{
