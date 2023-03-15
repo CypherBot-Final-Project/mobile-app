@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:cypherbot/graph.dart';
+import 'package:cypherbot/result.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -73,6 +74,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late Future<List> futureData;
+  String dropdownvalue = "dydx";
+  final money = TextEditingController();
+  var items = ["dydx", "uniswaps"];
+  
 
   @override
   void initState() {
@@ -98,11 +103,11 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             const Text(
-              "Arbitrage trading bot",
+              "Arbitrage simulation bot",
               style: TextStyle(
                   color: Color.fromARGB(255, 255, 255, 255),
                   fontWeight: FontWeight.bold,
-                  fontSize: 30),
+                  fontSize: 25),
             )
           ]),
         )
@@ -121,11 +126,11 @@ class _MyAppState extends State<MyApp> {
           toolbarHeight: 200,
           backgroundColor: color,
           bottom: TabBar(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(15),
             labelStyle:
                 const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), // Creates border
+                borderRadius: BorderRadius.circular(10), // Creates border
                 color: Colors.greenAccent),
             tabs: const <Widget>[Tab(text: "Coins"), Tab(text: "Bot")],
           ),
@@ -133,7 +138,15 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: color,
         body: TabBarView(
           
-          children: [Container(padding: const EdgeInsets.all(10), child: _cardContainer()), const Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10), child: _cardContainer()
+            ), 
+            Container(
+              
+              child: Builder(builder: (context) => botScreen(context),)
+            )
+          ],
         ),
       ),
     ));
@@ -199,6 +212,108 @@ class _MyAppState extends State<MyApp> {
           ),
         );
   }
+
+  Center botScreen(BuildContext context) {
+  return Center(
+      child: Column(
+    children: [
+      const Icon(Icons.android, size: 100, color: Colors.white),
+      Row(children: [
+        Padding(
+            padding: EdgeInsets.fromLTRB(50, 0, 40, 0),
+            child: Text(
+              "Money: ",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+              textAlign: TextAlign.center,
+            )),
+        SizedBox(
+          height: 40,
+          width: 200,
+          child: TextField(
+            style: TextStyle(color: Colors.greenAccent),
+            controller: money,
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.currency_exchange),
+              contentPadding: EdgeInsets.all(5),
+              filled: true,
+              fillColor: Colors.blueGrey,
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.greenAccent)),
+            ),
+          ),
+        )
+      ]),
+      Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Row(children: [
+          Padding(
+              padding: EdgeInsets.fromLTRB(50, 0, 30, 0),
+              child: Text(
+                "Provider: ",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+                textAlign: TextAlign.center,
+              )),
+          Container(
+              height: 40,
+              width: 200,
+              decoration: BoxDecoration(color: Colors.greenAccent),
+              child: DropdownButton(
+                items: items.map((String items) {
+                  return DropdownMenuItem(
+                    alignment: AlignmentDirectional.center,
+                    value: items,
+                    child: Text(items),
+                  );
+                }).toList(),
+                value: dropdownvalue,
+                onChanged: (value) => {
+                  setState(()=> {
+                    dropdownvalue = value!
+                  })
+                },
+                isExpanded: true,
+                icon: const Icon(Icons.arrow_drop_down),
+              
+              ))
+        ]),
+      ),
+      Padding(
+          padding: EdgeInsets.only(top: 40),
+          child: SizedBox(
+              height: 50,
+              width: 300,
+              child: ElevatedButton(
+                onPressed: () => {
+                  Navigator.push( context,
+                  MaterialPageRoute(builder: (context) => Result(money.text, dropdownvalue)),
+                  )
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color>(Colors.greenAccent),
+                ),
+                child: Text("Start Arbitrage",
+                    style: TextStyle(color: Color.fromARGB(255, 14, 34, 53))),
+              ))),
+      Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: SizedBox(
+              height: 50,
+              width: 300,
+              child: ElevatedButton(
+                onPressed: () => {},
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color>(Colors.blueGrey),
+                ),
+                child: Text("View my stat",
+                    style: TextStyle(color: Colors.greenAccent)),
+              )))
+    ],
+  ));
+}
+
+
 
 
 }
