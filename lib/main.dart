@@ -171,7 +171,7 @@ class _MyAppState extends State<MyApp> {
     int marketCapRank = asset.marketCapRank;
     double priceChange24hr = asset.priceChange24hr;
     return Card(
-          color: const Color.fromARGB(255, 73, 109, 128),
+          color: Colors.blueGrey,
           shadowColor: Colors.white,
           child: ExpansionTile(
             leading: Image.network(asset.image, height: 30, width: 30,),
