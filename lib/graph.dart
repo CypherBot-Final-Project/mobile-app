@@ -50,7 +50,7 @@ class _GraphState extends State<Graph> {
             onPressed: () => Navigator.of(context).pop(),
           ), 
           bottom: const TabBar(
-            tabs:  <Widget>[Tab(text:"today"), Tab(text:"week") , Tab(text:"1 month") , Tab(text:"1 year")],
+            tabs:  <Widget>[Tab(text:"1d"), Tab(text:"1w") , Tab(text:"1m") , Tab(text:"1y")],
             )
         ),
         backgroundColor: const Color.fromARGB(255, 14, 34, 53),
@@ -64,7 +64,7 @@ class _GraphState extends State<Graph> {
                 children: [createGraph(allData[0]), createGraph(allData[1]), createGraph(allData[2]), createGraph(allData[3])]);
             }
             else{
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator(color:  Colors.greenAccent));
             }
           },)
       ))

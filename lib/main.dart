@@ -121,8 +121,9 @@ class _MyAppState extends State<MyApp> {
           toolbarHeight: 200,
           backgroundColor: color,
           bottom: TabBar(
+            padding: const EdgeInsets.all(10),
             labelStyle:
-                const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(20), // Creates border
                 color: Colors.greenAccent),
@@ -131,14 +132,14 @@ class _MyAppState extends State<MyApp> {
         ),
         backgroundColor: color,
         body: TabBarView(
-          children: [_cardContainer(), const Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
+          
+          children: [Container(padding: const EdgeInsets.all(10), child: _cardContainer()), const Center(child: Icon(Icons.construction, size: 200, color: Colors.white,))],
         ),
       ),
     ));
   }
 
   Center _cardContainer() {
-      
     return Center(
         child: FutureBuilder(
         future: futureData,
@@ -154,7 +155,7 @@ class _MyAppState extends State<MyApp> {
               );
             }
           else{
-            return const CircularProgressIndicator();
+            return const CircularProgressIndicator(color:  Colors.greenAccent);
           }
           }
         )
