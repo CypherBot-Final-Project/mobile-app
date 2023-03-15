@@ -80,7 +80,7 @@ class _GraphState extends State<Graph> {
       double high = data[2].toDouble();
       double low = data[3].toDouble();
       double close = data[4].toDouble();
-      Candle candle = Candle(date: time, open: open,high: high, low: low, close: close, volume: close-open);
+      Candle candle = Candle(date: time, open: open,high: high, low: low, close: close, volume: high - low);
       candles.add(candle);
     }
     return Candlesticks(candles: candles);
