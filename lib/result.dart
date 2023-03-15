@@ -12,7 +12,17 @@ class Result extends StatefulWidget {
 class _ResultState extends State<Result>{
   @override
   Widget build(BuildContext context){
-    return MaterialApp(home: Scaffold(appBar: AppBar(title: Text("${widget.money}, ${widget.provider}"))),);
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("${widget.money}, ${widget.provider}"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          )
+        ),
+    );
   }
 }
 
