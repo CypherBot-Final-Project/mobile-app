@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:show_up_animation/show_up_animation.dart';
 
 final items = ["1","2","3"];
 
@@ -31,6 +32,7 @@ class _ResultState extends State<Result>{
           
           child: Column(
             children: [
+              addShowUp(
               Center(
                 child: Text(
                   "You get 1100฿ ", 
@@ -39,7 +41,8 @@ class _ResultState extends State<Result>{
                     fontWeight: FontWeight.bold, 
                     fontSize: 30)
                     ),
-                  ),
+                  )),
+              addShowUp(
                   Row(
                     children: [
                       Padding(
@@ -58,7 +61,9 @@ class _ResultState extends State<Result>{
                         child: Icon(Icons.arrow_upward_outlined, color: Colors.greenAccent, size: 30,),
                         )
                       ]
-                    ),
+                    )
+                  ),
+                  addShowUp(
                   Padding(
                     padding: EdgeInsets.only(top:20),
                     child: Center(
@@ -70,6 +75,7 @@ class _ResultState extends State<Result>{
                         )
                       ),
                     ),
+                  )
                   ),
                   SizedBox(
                     height: 500,
@@ -79,11 +85,13 @@ class _ResultState extends State<Result>{
                       child: ListView.builder(
                       itemCount: items.length,
                       itemBuilder:(context, index) {
-                        return Column(
-                          children: [
-                            _buildCard(items[index]),
-                            Icon(Icons.arrow_downward_rounded, color: Colors.greenAccent,)
-                          ],
+                        return ShowUpAnimation(
+                          delayStart: Duration(seconds: 1),
+                          animationDuration: Duration(seconds: 2),
+                          curve: Curves.bounceIn,
+                          direction: Direction.vertical,
+                          offset: 0.5,
+                          child: _buildContainer(items[index])
                         );
                       },
                     )
@@ -95,6 +103,15 @@ class _ResultState extends State<Result>{
         ),
         ),
     );
+  }
+
+  Column _buildContainer(String index){
+    return Column(
+      children: [
+        _buildCard(index),
+        Icon(Icons.arrow_downward_rounded, color: Colors.greenAccent,)
+      ],
+      );
   }
 
   Card _buildCard(String index){
@@ -111,5 +128,16 @@ class _ResultState extends State<Result>{
       )
     );
   }
+
+  ShowUpAnimation addShowUp(Widget widget){
+    return ShowUpAnimation(
+      delayStart: Duration(seconds: 1),
+      animationDuration: Duration(seconds: 1),
+      curve: Curves.bounceIn,
+      direction: Direction.vertical,
+      offset: 0.5,
+      child: widget
+  );
+}
 }
 
