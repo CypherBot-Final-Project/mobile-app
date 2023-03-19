@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cypherbot/dashboard.dart';
 import 'package:cypherbot/graph.dart';
 import 'package:cypherbot/result.dart';
 import 'package:flutter/material.dart';
@@ -301,7 +302,11 @@ class _MyAppState extends State<MyApp> {
               height: 50,
               width: 300,
               child: ElevatedButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.push( context,
+                  MaterialPageRoute(builder: (context) => DashBoard()),
+                  )
+                },
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStatePropertyAll<Color>(Colors.blueGrey),
