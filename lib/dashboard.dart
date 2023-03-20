@@ -1,4 +1,3 @@
-
 import 'package:cypherbot/graph/bar.dart';
 import 'package:cypherbot/graph/line.dart';
 import 'package:fl_chart/fl_chart.dart';
