@@ -3,6 +3,7 @@ class Asset {
   String id;
   String image;
   late double marketCap;
+  late double currentPrice;
   late double totalVolume; 
   late double circulatingSupply; 
   late double high24hr;
@@ -15,6 +16,7 @@ class Asset {
       required this.id,
       required this.image,
       required this.marketCap,
+      required this.currentPrice,
       required this.totalVolume, 
       required this.circulatingSupply, 
       required this.high24hr,
@@ -28,12 +30,13 @@ class Asset {
       id: json['id'],
       image: json['image'],
       marketCap: json['market_cap'].toDouble(),
+      currentPrice: json['current_price'].toDouble(),
       totalVolume: json['total_volume'].toDouble(),
       circulatingSupply: json['circulating_supply'].toDouble(),
       high24hr: json['high_24h'].toDouble(),
       low24hr: json['low_24h'].toDouble(),
       marketCapRank: json['market_cap_rank'],
-      priceChange24hr: json['price_change_24h'].toDouble(),
+      priceChange24hr: json['price_change_percentage_24h'].toDouble(),
     );
   }
   
