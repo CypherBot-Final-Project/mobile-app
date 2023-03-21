@@ -35,9 +35,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late Future<List> futureData;
-  String dropdownvalue = "dydx";
+  String dropdownvalue = "bancor";
   final money = TextEditingController();
-  var items = ["dydx", "uniswaps"];
+  var items = ["bancor", "uniswaps"];
   
 
   @override
@@ -137,15 +137,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Card _buildCard(Asset asset, BuildContext context){
-    double marketCap = asset.marketCap;
-    double totalVolume = asset.totalVolume;
-    double circulatingSupply = asset.circulatingSupply;
-    double high24hr = asset.high24hr;
-    double low24hr = asset.low24hr;
-    int marketCapRank = asset.marketCapRank;
-    double priceChange24hr = asset.priceChange24hr;
+
     return Card(
-          color: Colors.blueGrey,
+          color: Color.fromARGB(255, 46, 59, 66),
           shadowColor: Colors.white,
           child: ExpansionTile(
             leading: Image.network(asset.image, height: 30, width: 30,),
@@ -155,23 +149,83 @@ class _MyAppState extends State<MyApp> {
             ),
             iconColor: Colors.white,
             children: <Widget>[
-              Text("Market Capital: $marketCap"),
-              Text("Total Volume: $totalVolume"),
-              Text("Circulating Supply: $circulatingSupply"),
-              Text("High price in 24hrs: $high24hr"),
-              Text("Low price in 24hrs: $low24hr"),
-              Text("Market Capital Rank: $marketCapRank"),
-              Text("Prince change in 24hrs: $priceChange24hr"),
-              ElevatedButton(
+              detailSection(asset),
+              Padding(
+                padding: EdgeInsets.fromLTRB(200, 10, 0, 10),
+                child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.greenAccent,
+                  side: BorderSide(color: Colors.greenAccent)
+                ),
                 onPressed: (){
                   Navigator.push( context,
-                  MaterialPageRoute(builder: (context) => Graph(name: asset.id)),
+                  MaterialPageRoute(builder: (context) => Graph(name: asset.id) ),
                   );
                 }, 
-                child: const Text("see graph"))
+                child: const Text("see graph")),
+              )
+              
             ],
           ),
         );
+  }
+  Row detailSection(Asset asset){
+    double marketCap = asset.marketCap;
+    double currentPrice = asset.currentPrice;
+    double totalVolume = asset.totalVolume;
+    double circulatingSupply = asset.circulatingSupply;
+    double high24hr = asset.high24hr;
+    double low24hr = asset.low24hr;
+    int marketCapRank = asset.marketCapRank;
+    double priceChange24hr = asset.priceChange24hr;
+    Color color = Colors.greenAccent;
+    String operator = "+";
+    int decimalPoint = 5;
+    if (priceChange24hr < 0){
+      color = Color.fromARGB(255, 250, 66, 66);
+      operator = "-";
+    }
+    if (currentPrice > 1){
+      decimalPoint = 3;
+    }
+    return Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Column(
+          children: [
+            Text(currentPrice.toStringAsFixed(decimalPoint),style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 23) ),
+            Row(
+              children: [
+                Text("≈ ${currentPrice.toStringAsFixed(decimalPoint - 2)}   ", style:TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+                Text("$operator${priceChange24hr.toStringAsFixed(3)} %",style: TextStyle(color:color),)
+              ],
+            )
+          ],
+        ),
+        ),
+        
+        Padding(
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Column(
+          children: [
+            Row(
+              children: [
+                Text("24High:        ", style:TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+                Text("${high24hr.toStringAsFixed(3)}", style: TextStyle(color: Colors.white))
+              ],
+              ),
+            Row(
+              children: [
+                Text("24Low:        ", style:TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+                Text("${low24hr.toStringAsFixed(3)}" , style: TextStyle(color: Colors.white))
+              ],
+              ),
+          ],
+        ),
+          )
+        
+      ],);
   }
 
   Center botScreen(BuildContext context) {
@@ -245,8 +299,14 @@ class _MyAppState extends State<MyApp> {
               width: 300,
               child: ElevatedButton(
                 onPressed: () => {
+                  
                   Navigator.push( context,
-                  MaterialPageRoute(builder: (context) => Result(money.text, dropdownvalue)),
+                  MaterialPageRoute(builder: (context){
+                      String temp = money.text;
+                      money.clear();
+                      return Result(temp, dropdownvalue);
+                    }
+                    ),
                   )
                 },
                 style: ButtonStyle(
