@@ -27,7 +27,6 @@ class _ResultState extends State<Result> {
   @override
   void initState() {
     super.initState();
-    print(widget.money);
     futureData = fetchData(widget.money, widget.provider);
   }
 
