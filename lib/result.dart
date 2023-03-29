@@ -1,7 +1,10 @@
+import 'package:cypherbot/services/cypher_database.dart';
 import 'package:flutter/material.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'model/stat.dart';
 
 Future<Map<String, dynamic>> fetchData(String money, String provider) async {
   String uri = "http://localhost:3000/arbitrage?money=$money&provider=$provider";
@@ -10,8 +13,6 @@ Future<Map<String, dynamic>> fetchData(String money, String provider) async {
   Map<String, dynamic> datas = json.decode(response.body);
   return datas;
 }
-
-final items = ["1", "2", "3"];
 
 class Result extends StatefulWidget {
   final String money;
@@ -24,6 +25,7 @@ class Result extends StatefulWidget {
 
 class _ResultState extends State<Result> {
   late Future<Map<String, dynamic>> futureData;
+  late Stat stats;
   @override
   void initState() {
     super.initState();
@@ -52,6 +54,7 @@ class _ResultState extends State<Result> {
                 String total_profit = data["total_profit"].toStringAsFixed(5);
                 String total_percentage = data["total_percentage"].toStringAsFixed(2);
                 String time_spending = data["time_spending"].toStringAsFixed(1);
+                stats = Stat(provider: widget.provider, createAt: DateTime.now(), profit: data["total_profit"], initialMoney: double.parse(widget.money) );
                 List list_token = data["list_token"];
                 return Container(
                     padding: EdgeInsets.only(top: 20),
@@ -66,7 +69,7 @@ class _ResultState extends State<Result> {
                         )),
                         addShowUp(Row(children: [
                           Padding(
-                            padding: EdgeInsets.fromLTRB(150, 20, 20, 0),
+                            padding: EdgeInsets.fromLTRB(150, 20, 0 , 0),
                             child: Text("$total_percentage%",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -75,11 +78,11 @@ class _ResultState extends State<Result> {
                                 )),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 20),
+                            padding: EdgeInsets.only(top: 30),
                             child: Icon(
-                              Icons.arrow_upward_outlined,
+                              Icons.arrow_drop_up,
                               color: Colors.greenAccent,
-                              size: 30,
+                              size: 55,
                             ),
                           )
                         ])),
@@ -107,7 +110,7 @@ class _ResultState extends State<Result> {
                                         curve: Curves.bounceIn,
                                         direction: Direction.vertical,
                                         offset: 0.5,
-                                        child: _buildContainer(list_token[index]));
+                                        child: _buildContainer(list_token[index], (index == list_token.length -1)));
                                   },
                                 )))
                       ],
@@ -121,7 +124,29 @@ class _ResultState extends State<Result> {
     );
   }
 
-  Column _buildContainer(Map<String, dynamic> item) {
+  Column _buildContainer(Map<String, dynamic> item, bool end) {
+    if (end){
+      return Column(
+      children: [
+        _buildCard(item),
+        Icon(
+          Icons.arrow_downward_rounded,
+          color: Colors.greenAccent,
+        ),
+        ElevatedButton(
+          onPressed: (() {
+            _save(stats);
+          }), 
+          style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color>(Colors.greenAccent),
+                ),
+                child: Text("Save Result",
+                    style: TextStyle(color: Color.fromARGB(255, 14, 34, 53))),
+        )
+      ],
+    );
+    }
     return Column(
       children: [
         _buildCard(item),
@@ -131,6 +156,9 @@ class _ResultState extends State<Result> {
         )
       ],
     );
+  }
+  void _save(Stat stat){
+    CypherDatabase.instance.createStat(stat);
   }
 
   Card _buildCard(Map<String, dynamic> item) {

@@ -1,12 +1,12 @@
 class TokenFields {
   static final List<String> values = [
-    id, tokenName, value, image, timestamp
+    id, tokenName, value, image, createAt
   ];
   static final String id = '_id';
   static final String tokenName = 'tokenName';
   static final String value = 'valuer';
   static final String image = 'image';
-  static final String timestamp = 'timestamp';
+  static final String createAt = 'createAt';
 }
 
 class Token{
@@ -14,14 +14,14 @@ class Token{
   final String tokenName;
   final double value;
   final String image;
-  final DateTime timestamp;
+  final DateTime createAt;
 
   Token({
     this.id,
     required this.tokenName,
     required this.value,
     required this.image,
-    required this.timestamp,
+    required this.createAt,
 
   });
 
@@ -30,7 +30,7 @@ class Token{
     tokenName: json[TokenFields.tokenName] as String,
     value: json[TokenFields.value] as double,
     image: json[TokenFields.image] as String,
-    timestamp: DateTime.parse(json[TokenFields.timestamp] as String)
+    createAt: DateTime.parse(json[TokenFields.createAt] as String)
   );
   
 
@@ -39,7 +39,7 @@ class Token{
     TokenFields.tokenName: tokenName,
     TokenFields.value: value,
     TokenFields.image: image,
-    TokenFields.timestamp: timestamp.toIso8601String(),
+    TokenFields.createAt: createAt.toIso8601String(),
   };
 
 }

@@ -1,27 +1,27 @@
 class StatFields {
   static final List<String> values = [
-    id, initialMoney, provider, timeSpending, timestamp
+    id, initialMoney, provider, profit, createAt
   ];
   static final String id = '_id';
   static final String initialMoney = 'initialMoney';
   static final String provider = 'provider';
-  static final String timeSpending = 'timeSpending';
-  static final String timestamp = 'timestamp';
+  static final String profit = 'profit';
+  static final String createAt = 'createAt';
 }
 
 class Stat{
   final int? id;
   final double initialMoney;
   final String provider;
-  final double timeSpending;
-  final DateTime timestamp;
+  final double profit;
+  final DateTime createAt;
 
   Stat({
     this.id,
     required this.initialMoney,
     required this.provider,
-    required this.timeSpending,
-    required this.timestamp,
+    required this.profit,
+    required this.createAt,
 
   });
 
@@ -29,8 +29,8 @@ class Stat{
     id: json[StatFields.id] as int?,
     initialMoney: json[StatFields.initialMoney] as double,
     provider: json[StatFields.provider] as String,
-    timeSpending: json[StatFields.timeSpending] as double,
-    timestamp: DateTime.parse(json[StatFields.timestamp] as String)
+    profit: json[StatFields.profit] as double,
+    createAt: DateTime.parse(json[StatFields.createAt] as String)
   );
   
 
@@ -38,8 +38,8 @@ class Stat{
     StatFields.id: id,
     StatFields.initialMoney: initialMoney,
     StatFields.provider: provider,
-    StatFields.timeSpending: timeSpending,
-    StatFields.timestamp: timestamp.toIso8601String(),
+    StatFields.profit: profit,
+    StatFields.createAt: createAt.toIso8601String(),
   };
 
 }

@@ -6,10 +6,12 @@ import 'package:cypherbot/result.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:cypherbot/model/asset.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<List> fetchData() async {
+  String uri = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=thb';
   final response = await http
-      .get(Uri.parse('https://api.coingecko.com/api/v3/coins/markets?vs_currency=thb'));
+      .get(Uri.parse(uri));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -52,7 +54,9 @@ class _MyAppState extends State<MyApp> {
       children: [
         Expanded(
           child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start, 
+              children: [
             Container(
               padding: const EdgeInsets.only(bottom: 15),
               child: const Text(
@@ -69,11 +73,15 @@ class _MyAppState extends State<MyApp> {
                   color: Color.fromARGB(255, 255, 255, 255),
                   fontWeight: FontWeight.bold,
                   fontSize: 25),
-            )
-          ]),
+              ),
+              
+            ]
+          ),
         )
       ],
     );
+
+
 
     Color color = const Color.fromARGB(255, 14, 34, 53);
     return MaterialApp(
@@ -109,9 +117,20 @@ class _MyAppState extends State<MyApp> {
             )
           ],
         ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () async{
+            await launch("https://www.coingecko.com/en/api/documentation");
+          },
+          icon: Text("Powered by"),
+          label: Image.asset("assets/images/coingecko_logo.png", height: 50, width: 120),
+          backgroundColor: Colors.green,
+          
+        ),
+        
       ),
     ));
   }
+
 
   Center _cardContainer() {
     return Center(
@@ -129,6 +148,7 @@ class _MyAppState extends State<MyApp> {
               );
             }
           else{
+
             return const CircularProgressIndicator(color:  Colors.greenAccent);
           }
           }
@@ -147,7 +167,7 @@ class _MyAppState extends State<MyApp> {
               asset.name,
               style: const TextStyle(color: Colors.white),
             ),
-            iconColor: Colors.white,
+            iconColor: Colors.greenAccent,
             children: <Widget>[
               detailSection(asset),
               Padding(
@@ -183,7 +203,7 @@ class _MyAppState extends State<MyApp> {
     int decimalPoint = 5;
     if (priceChange24hr < 0){
       color = Color.fromARGB(255, 250, 66, 66);
-      operator = "-";
+      operator = "";
     }
     if (currentPrice > 1){
       decimalPoint = 3;
@@ -194,7 +214,7 @@ class _MyAppState extends State<MyApp> {
           padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: Column(
           children: [
-            Text(currentPrice.toStringAsFixed(decimalPoint),style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 23) ),
+            Text("${currentPrice.toStringAsFixed(decimalPoint)} ฿",style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 23) ),
             Row(
               children: [
                 Text("≈ ${currentPrice.toStringAsFixed(decimalPoint - 2)}   ", style:TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold)),
@@ -301,11 +321,7 @@ class _MyAppState extends State<MyApp> {
                 onPressed: () => {
                   
                   Navigator.push( context,
-                  MaterialPageRoute(builder: (context){
-                      String temp = money.text;
-                      money.clear();
-                      return Result(temp, dropdownvalue);
-                    }
+                  MaterialPageRoute(builder: (context) => Result(money.text, dropdownvalue)
                     ),
                   )
                 },

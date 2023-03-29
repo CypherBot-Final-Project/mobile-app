@@ -1,7 +1,10 @@
 import 'package:cypherbot/graph/bar.dart';
 import 'package:cypherbot/graph/line.dart';
+import 'package:cypherbot/services/cypher_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
+import 'model/stat.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -10,12 +13,16 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-
+  late List<Stat> stats;
   late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
+  bool isLoading = false;
 
   @override
   void initState() {
+
+    refreshStats();
+    
     super.initState();
     final barGroup1 = makeGroupData(0, 5, 12);
     final barGroup2 = makeGroupData(1, 16, 12);
@@ -38,6 +45,24 @@ class _DashBoardState extends State<DashBoard> {
     rawBarGroups = items;
 
     showingBarGroups = rawBarGroups;
+
+  }
+
+  @override
+  void dispose() {
+    CypherDatabase.instance.close();
+
+    super.dispose();
+  }
+  Future refreshStats() async {
+    setState(() => isLoading = true);
+
+    stats = await CypherDatabase.instance.readAllStats();
+    for (var stat in stats){
+      print(stat.profit);
+    }
+
+    setState(() => isLoading = false);
   }
 
   @override

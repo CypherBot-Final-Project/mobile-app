@@ -24,27 +24,26 @@ class CypherDatabase {
 
   Future _createDB(Database db, int version) async{
     final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    final doubleType = 'DOUBLE NOT NULL';
+    final doubleType = 'DOUBLE(10) NOT NULL';
     final textType = 'TEXT NOT NULL';
 
     await db.execute('''
-    CREATE TABLE stat (
+    CREATE TABLE Stat (
       ${StatFields.id} $idType,
       ${StatFields.initialMoney} $doubleType,
       ${StatFields.provider} $textType,
-      ${StatFields.timeSpending} $doubleType,
-      ${StatFields.timestamp} $textType,
-
+      ${StatFields.profit} $doubleType,
+      ${StatFields.createAt} $textType
     )
     ''');
 
     await db.execute('''
-    CREATE TABLE token (
+    CREATE TABLE Token (
       ${TokenFields.id} $idType,
       ${TokenFields.tokenName} $textType,
       ${TokenFields.value} $doubleType,
       ${TokenFields.image} $textType,
-      ${TokenFields.timestamp} $textType,
+      ${TokenFields.createAt} $textType
     )
     ''');
 
@@ -58,6 +57,44 @@ class CypherDatabase {
   Future<void> createToken(Token token) async {
     final db = await instance.database;
     await db.insert("token", token.toJson());
+  }
+  Future<List<Stat>> readAllStats() async {
+    final db = await instance.database;
+
+    final orderBy = '${StatFields.createAt} ASC';
+    // final result =
+    //     await db.rawQuery('SELECT * FROM $tableNotes ORDER BY $orderBy');
+
+    final result = await db.query("Stat", orderBy: orderBy);
+
+    return result.map((json) => Stat.fromJson(json)).toList();
+  }
+
+  
+
+  Future readBarChart(String start, String end) async {
+    final db = await instance.database;
+    final map = await db.rawQuery('''
+    SELECT SUM(initialMoney), SUM(profit), createAt FROM Stat
+    where createAt >= $start and createAt <= $end
+    GROUP BY createAt
+    ORDER BY createAt DESC;
+  ''');
+    return map;
+  }
+
+  Future readLineChart() async {
+    final db = await instance.database;
+    final map = await db.rawQuery(''' 
+      SELECT profit, createAt FROM Stat
+      ORDER BY createAt ASC;
+    ''');
+  }
+
+  Future close() async {
+    final db = await instance.database;
+
+    db.close();
   }
 
 
