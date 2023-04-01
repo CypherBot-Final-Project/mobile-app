@@ -157,8 +157,10 @@ class _ResultState extends State<Result> {
       ],
     );
   }
-  void _save(Stat stat){
-    CypherDatabase.instance.createStat(stat);
+  void _save (Stat stat) async{
+    await CypherDatabase.instance.createStat(stat);
+    Navigator.of(context).pop();
+
   }
 
   Card _buildCard(Map<String, dynamic> item) {

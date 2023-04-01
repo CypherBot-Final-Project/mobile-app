@@ -3,8 +3,7 @@ import 'package:cypherbot/graph/line.dart';
 import 'package:cypherbot/services/cypher_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
-import 'model/stat.dart';
+import 'package:intl/intl.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -13,17 +12,15 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  late List<Stat> stats;
+  late List stats;
   late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
   bool isLoading = false;
 
   @override
   void initState() {
-
-    refreshStats();
-    
     super.initState();
+    refreshStats();
     final barGroup1 = makeGroupData(0, 5, 12);
     final barGroup2 = makeGroupData(1, 16, 12);
     final barGroup3 = makeGroupData(2, 18, 5);
@@ -42,25 +39,64 @@ class _DashBoardState extends State<DashBoard> {
       barGroup7,
     ];
 
-    rawBarGroups = items;
-
-    showingBarGroups = rawBarGroups;
+    showingBarGroups = items;
 
   }
 
-  @override
-  void dispose() {
-    CypherDatabase.instance.close();
-
-    super.dispose();
+  int checkDate(String day) {
+    if (day == "Monday"){
+      return 0;
+    }
+    else if (day == "Tuesday"){
+      return 1;
+    }
+    else if (day == "Wednesday"){
+      return 2;
+    }
+    else if (day == "Thursday"){
+      return 3;
+    }
+    else if (day == "Friday"){
+      return 4;
+    }
+    else if (day == "Saturday"){
+      return 5;
+    }
+    else if (day == "Sunday"){
+      return 6;
+    }
+    else{
+      return 7;
+    }
   }
+
   Future refreshStats() async {
     setState(() => isLoading = true);
 
-    stats = await CypherDatabase.instance.readAllStats();
+    var items = [
+      makeGroupData(0,0,0),
+      makeGroupData(0,0,0),
+      makeGroupData(0,0,0),
+      makeGroupData(0,0,0),
+      makeGroupData(0,0,0),
+      makeGroupData(0,0,0),
+      makeGroupData(0,0,0),
+    ];
+
+    var now = DateTime.now();
+    var start = now.add(const Duration(days: -6));
+
+
+    stats = await CypherDatabase.instance.readBarChart();
+    // stats = await CypherDatabase.instance.readAllStats();
     for (var stat in stats){
-      print(stat.profit);
+      var time = DateTime.parse(stat["createAt"]); 
+      var weekday = DateFormat("EEEE").format(time);
+      if (time.compareTo(now) <= 0 && time.compareTo(start) >= 0){
+        items[checkDate(weekday)] = makeGroupData(checkDate(weekday), stat["initialMoney"]/1000000000, (stat["initialMoney"]+stat["profit"])/1000000000);
+      }
     }
+    showingBarGroups = items;
 
     setState(() => isLoading = false);
   }

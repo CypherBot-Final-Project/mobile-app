@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 class StatFields {
   static final List<String> values = [
     id, initialMoney, provider, profit, createAt
@@ -39,7 +40,7 @@ class Stat{
     StatFields.initialMoney: initialMoney,
     StatFields.provider: provider,
     StatFields.profit: profit,
-    StatFields.createAt: createAt.toIso8601String(),
+    StatFields.createAt: DateFormat('yyyy-MM-dd').format(createAt),
   };
 
 }
