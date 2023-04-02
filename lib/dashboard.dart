@@ -15,19 +15,20 @@ class _DashBoardState extends State<DashBoard> {
   late List stats;
   late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
+  late List<FlSpot> spots;
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     refreshStats();
-    final barGroup1 = makeGroupData(0, 5, 12);
-    final barGroup2 = makeGroupData(1, 16, 12);
-    final barGroup3 = makeGroupData(2, 18, 5);
-    final barGroup4 = makeGroupData(3, 20, 16);
-    final barGroup5 = makeGroupData(4, 17, 6);
-    final barGroup6 = makeGroupData(5, 19, 1.5);
-    final barGroup7 = makeGroupData(6, 10, 1.5);
+    final barGroup1 = makeGroupData(0, 0, 0);
+    final barGroup2 = makeGroupData(1, 0, 0);
+    final barGroup3 = makeGroupData(2, 0, 0);
+    final barGroup4 = makeGroupData(3, 0, 0);
+    final barGroup5 = makeGroupData(4, 0, 0);
+    final barGroup6 = makeGroupData(5, 0, 0);
+    final barGroup7 = makeGroupData(6, 0, 0);
 
     final items = [
       barGroup1,
@@ -38,8 +39,18 @@ class _DashBoardState extends State<DashBoard> {
       barGroup6,
       barGroup7,
     ];
-
-    showingBarGroups = items;
+    final spot = [
+            FlSpot(0, 3),
+            FlSpot(2.6, 2),
+            FlSpot(4.9, 5),
+            FlSpot(6.8, 3.1),
+            FlSpot(8, 4),
+            FlSpot(9.5, 3),
+            FlSpot(11, 4),
+    ],
+    rawBarGroups = items;
+    showingBarGroups = rawBarGroups;
+    spots = spot;
 
   }
 
@@ -75,28 +86,36 @@ class _DashBoardState extends State<DashBoard> {
 
     var items = [
       makeGroupData(0,0,0),
-      makeGroupData(0,0,0),
-      makeGroupData(0,0,0),
-      makeGroupData(0,0,0),
-      makeGroupData(0,0,0),
-      makeGroupData(0,0,0),
-      makeGroupData(0,0,0),
+      makeGroupData(1,0,0),
+      makeGroupData(2,0,0),
+      makeGroupData(3,0,0),
+      makeGroupData(4,0,0),
+      makeGroupData(5,0,0),
+      makeGroupData(6,0,0),
     ];
+    List<FlSpot> spot = [];
 
     var now = DateTime.now();
-    var start = now.add(const Duration(days: -6));
+    var day = checkDate(DateFormat("EEEE").format(now)) * -1;
+    var start = now.add(Duration(days: day));
 
 
-    stats = await CypherDatabase.instance.readBarChart();
+    stats = await CypherDatabase.instance.readChart();
     // stats = await CypherDatabase.instance.readAllStats();
     for (var stat in stats){
-      var time = DateTime.parse(stat["createAt"]); 
+      var time = DateTime.parse(stat["createAt"]);
+      var month = time.month;
+      var date = time.day;
+      var y = month + (day * 0.01);
       var weekday = DateFormat("EEEE").format(time);
       if (time.compareTo(now) <= 0 && time.compareTo(start) >= 0){
         items[checkDate(weekday)] = makeGroupData(checkDate(weekday), stat["initialMoney"]/1000000000, (stat["initialMoney"]+stat["profit"])/1000000000);
       }
+      spot.add(FlSpot(y, stat["profit"]/10000000000));
+
     }
     showingBarGroups = items;
+    spots = spot;
 
     setState(() => isLoading = false);
   }
@@ -117,7 +136,7 @@ class _DashBoardState extends State<DashBoard> {
         body: Column(
           children: [
             barChart(showingBarGroups),
-            lineChart()
+            lineChart(spots),
           ],
           )
           ));

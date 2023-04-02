@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
   List<Color> gradientColors = [
     Colors.cyan, Colors.blue
   ];
-Stack lineChart(){
+Stack lineChart(spots){
 
   return Stack(
       children: <Widget>[
@@ -18,7 +18,7 @@ Stack lineChart(){
               bottom: 12,
             ),
             child: LineChart(
-              mainData(),
+              mainData(spots),
             ),
           ),
         ),
@@ -78,7 +78,7 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  LineChartData mainData() {
+  LineChartData mainData(spots) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -133,15 +133,7 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
       maxY: 6,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: spots,
           isCurved: true,
           gradient: LinearGradient(
             colors: gradientColors,

@@ -72,7 +72,7 @@ class CypherDatabase {
 
   
 
-  Future readBarChart() async {
+  Future readChart() async {
     final db = await instance.database;
     final result = await db.rawQuery('''
     SELECT SUM(initialMoney) as initialMoney, SUM(profit) as profit, createAt FROM Stat
@@ -80,15 +80,6 @@ class CypherDatabase {
     ORDER BY createAt ASC;
   ''');
     return result;
-  }
-
-  Future readLineChart() async {
-    final db = await instance.database;
-    final map = await db.rawQuery(''' 
-      SELECT profit, createAt FROM Stat
-      ORDER BY createAt ASC;
-    ''');
-
   }
 
   Future close() async {
