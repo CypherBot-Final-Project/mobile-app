@@ -17,17 +17,22 @@ AspectRatio barChart(showingBarGroups){
                   width: 38,
                 ),
                 const Text(
-                  'Transactions',
+                  'Arbitrage',
                   style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
                 const SizedBox(
                   width: 4,
                 ),
                 const Text(
-                  'state',
+                  'record',
                   style: TextStyle(color: Color(0xff77839a), fontSize: 16),
                 ),
               ],
+            ),
+            const Padding(
+              
+              padding: EdgeInsets.only(top: 20),
+              child: Center(child:Text("Initial vs. profit", style: TextStyle(color: Colors.white),)),
             ),
             const SizedBox(
               height: 38,

@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'model/stat.dart';
 
 Future<Map<String, dynamic>> fetchData(String money, String provider) async {
-  String uri = "http://localhost:3000/arbitrage?money=$money&provider=$provider";
+  String uri = "https://cypherbot-backup.up.railway.app/arbitrage?money=$money&provider=$provider";
   final response = await http.post(
       Uri.parse(uri));
   Map<String, dynamic> datas = json.decode(response.body);
@@ -117,7 +117,7 @@ class _ResultState extends State<Result> {
                     ));
               }
               else{
-                return const CircularProgressIndicator(color:  Colors.greenAccent);
+                return const Center(child:CircularProgressIndicator(color:  Colors.greenAccent));
               }
             }),
           )),

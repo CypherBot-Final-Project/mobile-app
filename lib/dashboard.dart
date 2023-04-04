@@ -136,6 +136,10 @@ class _DashBoardState extends State<DashBoard> {
         body: Column(
           children: [
             barChart(showingBarGroups),
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text("Cumulative profit", style: TextStyle(color: Colors.white),),
+            ),
             lineChart(spots),
           ],
           )

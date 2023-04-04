@@ -9,7 +9,7 @@ import 'package:cypherbot/model/asset.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<List> fetchData() async {
-  String uri = 'http://localhost:3000/info';
+  String uri = 'https://cypherbot-backup.up.railway.app/info';
   final response = await http.get(Uri.parse(uri));
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
