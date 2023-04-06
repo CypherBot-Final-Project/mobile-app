@@ -38,14 +38,14 @@ class _ResultState extends State<Result> {
       theme: ThemeData(fontFamily: "Oxygen"),
       home: Scaffold(
           appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 14, 34, 53),
+            backgroundColor: const Color.fromRGBO(54, 63, 93, 1),
             // title: Text("${widget.money}, ${widget.provider}"),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
-          backgroundColor: const Color.fromARGB(255, 14, 34, 53),
+          backgroundColor: const Color.fromRGBO(54, 63, 93, 1),
           body: FutureBuilder(
             future: futureData,
             builder: ((context, snapshot) {

@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
       ],
     );
 
-    Color color = const Color.fromARGB(255, 14, 34, 53);
+    Color color = const Color.fromRGBO(54, 63, 93, 1);
     return MaterialApp(
         theme: ThemeData(fontFamily: "Oxygen"),
         home: DefaultTabController(
@@ -163,6 +163,7 @@ class _MyAppState extends State<MyApp> {
         iconColor: Colors.greenAccent,
         children: <Widget>[
           detailSection(asset),
+          
           Padding(
             padding: EdgeInsets.fromLTRB(200, 10, 0, 10),
             child: OutlinedButton(
@@ -203,6 +204,7 @@ class _MyAppState extends State<MyApp> {
       decimalPoint = 3;
     }
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -259,7 +261,10 @@ class _MyAppState extends State<MyApp> {
         child: Column(
       children: [
         const Icon(Icons.android, size: 100, color: Colors.white),
-        Row(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          
           Padding(
               padding: EdgeInsets.fromLTRB(50, 0, 40, 0),
               child: Text(
@@ -287,7 +292,9 @@ class _MyAppState extends State<MyApp> {
         ]),
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Row(children: [
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
             Padding(
                 padding: EdgeInsets.fromLTRB(50, 0, 30, 0),
                 child: Text(

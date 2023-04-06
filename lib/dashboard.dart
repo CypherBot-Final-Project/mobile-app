@@ -125,20 +125,21 @@ class _DashBoardState extends State<DashBoard> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 14, 34, 53),
+          backgroundColor: Color.fromRGBO(54, 63, 93, 1),
           // title: Text("${widget.money}, ${widget.provider}"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 14, 34, 53),
-        body: Column(
+        backgroundColor: Color.fromRGBO(54, 63, 93, 1),
+        body: ListView(
+          padding: const EdgeInsets.all(10),
           children: [
             barChart(showingBarGroups),
             const Padding(
               padding: EdgeInsets.only(top: 20),
-              child: Text("Cumulative profit", style: TextStyle(color: Colors.white),),
+              child: Center(child:Text("Cumulative profit", style: TextStyle(color: Colors.white)),),
             ),
             lineChart(spots),
           ],
