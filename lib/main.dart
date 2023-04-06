@@ -258,7 +258,7 @@ class _MyAppState extends State<MyApp> {
 
   Center botScreen(BuildContext context) {
     return Center(
-        child: Column(
+        child: ListView(
       children: [
         const Icon(Icons.android, size: 100, color: Colors.white),
         Row(
@@ -324,10 +324,10 @@ class _MyAppState extends State<MyApp> {
           ]),
         ),
         Padding(
-            padding: EdgeInsets.only(top: 40),
+            padding: EdgeInsets.only(top: 70),
             child: SizedBox(
                 height: 50,
-                width: 300,
+                width: 100,
                 child: ElevatedButton(
                   onPressed: () => {
                     if (money.text != "")
