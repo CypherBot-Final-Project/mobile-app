@@ -109,10 +109,8 @@ class _DashBoardState extends State<DashBoard> {
       var month = time.month;
       var y = month + (day * 0.01);
       var weekday = DateFormat("EEEE").format(time);
-      var maxInit = pow(10,stat["maxInit"].toString().length);
-      var maxProfit = pow(10,stat["maxProfit"].toString().length);
-      print(maxInit);
-      print(maxProfit);
+      var maxInit = pow(10,stat["maxInit"].toInt().toString().length);
+      var maxProfit = pow(10,stat["maxProfit"].toInt().toString().length);
       if (time.compareTo(now) <= 0 && time.compareTo(start) >= 0){
         items[checkDate(weekday)] = makeGroupData(checkDate(weekday), stat["initialMoney"]/maxInit, (stat["initialMoney"]+stat["profit"])/maxInit);
       }
