@@ -75,7 +75,7 @@ class CypherDatabase {
   Future readChart() async {
     final db = await instance.database;
     final result = await db.rawQuery('''
-    SELECT SUM(initialMoney) as initialMoney, SUM(profit) as profit, createAt FROM Stat
+    SELECT SUM(initialMoney) as initialMoney, SUM(profit) as profit, MAX(initialMoney) as maxInit, MAX(profit) as maxProfit, createAt FROM Stat
     GROUP BY createAt
     ORDER BY createAt ASC;
   ''');

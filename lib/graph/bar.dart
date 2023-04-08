@@ -32,7 +32,7 @@ AspectRatio barChart(showingBarGroups){
             const Padding(
               
               padding: EdgeInsets.only(top: 20),
-              child: Center(child:Text("Initial vs. profit", style: TextStyle(color: Colors.white),)),
+              child: Center(child:Text("Initial vs. profit (week)", style: TextStyle(color: Colors.white),)),
             ),
             const SizedBox(
               height: 38,

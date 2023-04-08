@@ -57,27 +57,27 @@ class _ResultState extends State<Result> {
                 stats = Stat(provider: widget.provider, createAt: DateTime.now(), profit: data["total_profit"], initialMoney: double.parse(widget.money) );
                 List list_token = data["list_token"];
                 return Container(
-                    padding: EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.only(top: 20),
                     child: Column(
                       children: [
                         addShowUp(Center(
                           child: Text("You get $total_profit฿ ",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30)),
                         )),
                         addShowUp(Row(children: [
                           Padding(
-                            padding: EdgeInsets.fromLTRB(150, 20, 0 , 0),
+                            padding: const EdgeInsets.fromLTRB(150, 20, 0 , 0),
                             child: Text("$total_percentage%",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.blueGrey,
                                   fontSize: 30,
                                 )),
                           ),
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(top: 30),
                             child: Icon(
                               Icons.arrow_drop_up,
@@ -87,10 +87,10 @@ class _ResultState extends State<Result> {
                           )
                         ])),
                         addShowUp(Padding(
-                          padding: EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.only(top: 20),
                           child: Center(
                             child: Text("Time spending: $time_spending sec",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.blueGrey,
                                   fontSize: 20,
                                 )),
@@ -100,13 +100,13 @@ class _ResultState extends State<Result> {
                             height: 500,
                             width: 300,
                             child: Padding(
-                                padding: EdgeInsets.only(top: 20),
+                                padding: const EdgeInsets.only(top: 20),
                                 child: ListView.builder(
                                   itemCount: list_token.length,
                                   itemBuilder: (context, index) {
                                     return ShowUpAnimation(
-                                        delayStart: Duration(seconds: 1),
-                                        animationDuration: Duration(seconds: 2),
+                                        delayStart: const  Duration(seconds: 1),
+                                        animationDuration: const Duration(seconds: 2),
                                         curve: Curves.bounceIn,
                                         direction: Direction.vertical,
                                         offset: 0.5,
@@ -129,7 +129,7 @@ class _ResultState extends State<Result> {
       return Column(
       children: [
         _buildCard(item),
-        Icon(
+        const Icon(
           Icons.arrow_downward_rounded,
           color: Colors.greenAccent,
         ),
@@ -137,11 +137,11 @@ class _ResultState extends State<Result> {
           onPressed: (() {
             _save(stats);
           }), 
-          style: ButtonStyle(
+          style: const ButtonStyle(
                   backgroundColor:
                       MaterialStatePropertyAll<Color>(Colors.greenAccent),
                 ),
-                child: Text("Save Result",
+                child: const Text("Save Result",
                     style: TextStyle(color: Color.fromARGB(255, 14, 34, 53))),
         )
       ],
@@ -150,7 +150,7 @@ class _ResultState extends State<Result> {
     return Column(
       children: [
         _buildCard(item),
-        Icon(
+        const Icon(
           Icons.arrow_downward_rounded,
           color: Colors.greenAccent,
         )
@@ -169,7 +169,7 @@ class _ResultState extends State<Result> {
         child: Column(
           children: [
             ListTile(
-              leading: Icon(Icons.currency_bitcoin),
+              leading: const Icon(Icons.currency_bitcoin),
               title: Text(item["token_name"]),
               subtitle: Text("${item["value"].toString()}฿"),
             ),
@@ -179,8 +179,8 @@ class _ResultState extends State<Result> {
 
   ShowUpAnimation addShowUp(Widget widget) {
     return ShowUpAnimation(
-        delayStart: Duration(seconds: 1),
-        animationDuration: Duration(seconds: 1),
+        delayStart: const Duration(seconds: 1),
+        animationDuration: const Duration(seconds: 1),
         curve: Curves.bounceIn,
         direction: Direction.vertical,
         offset: 0.5,

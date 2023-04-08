@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cypherbot/graph/bar.dart';
 import 'package:cypherbot/graph/line.dart';
 import 'package:cypherbot/services/cypher_database.dart';
@@ -39,7 +41,7 @@ class _DashBoardState extends State<DashBoard> {
       barGroup6,
       barGroup7,
     ];
-    final spot = [
+    final spot = const [
             FlSpot(0, 3),
             FlSpot(2.6, 2),
             FlSpot(4.9, 5),
@@ -105,13 +107,16 @@ class _DashBoardState extends State<DashBoard> {
     for (var stat in stats){
       var time = DateTime.parse(stat["createAt"]);
       var month = time.month;
-      var date = time.day;
       var y = month + (day * 0.01);
       var weekday = DateFormat("EEEE").format(time);
+      var maxInit = pow(10,stat["maxInit"].toString().length);
+      var maxProfit = pow(10,stat["maxProfit"].toString().length);
+      print(maxInit);
+      print(maxProfit);
       if (time.compareTo(now) <= 0 && time.compareTo(start) >= 0){
-        items[checkDate(weekday)] = makeGroupData(checkDate(weekday), stat["initialMoney"]/1000000000, (stat["initialMoney"]+stat["profit"])/1000000000);
+        items[checkDate(weekday)] = makeGroupData(checkDate(weekday), stat["initialMoney"]/maxInit, (stat["initialMoney"]+stat["profit"])/maxInit);
       }
-      spot.add(FlSpot(y, stat["profit"]/10000000000));
+      spot.add(FlSpot(y, stat["profit"]/maxProfit));
 
     }
     showingBarGroups = items;
@@ -125,21 +130,21 @@ class _DashBoardState extends State<DashBoard> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(54, 63, 93, 1),
+          backgroundColor: const Color.fromRGBO(54, 63, 93, 1),
           // title: Text("${widget.money}, ${widget.provider}"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        backgroundColor: Color.fromRGBO(54, 63, 93, 1),
+        backgroundColor: const Color.fromRGBO(54, 63, 93, 1),
         body: ListView(
           padding: const EdgeInsets.all(10),
           children: [
             barChart(showingBarGroups),
             const Padding(
               padding: EdgeInsets.only(top: 20),
-              child: Center(child:Text("Cumulative profit", style: TextStyle(color: Colors.white)),),
+              child: Center(child:Text("Cumulative profit (year)", style: TextStyle(color: Colors.white)),),
             ),
             lineChart(spots),
           ],

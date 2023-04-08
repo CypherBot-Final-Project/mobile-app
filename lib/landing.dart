@@ -115,7 +115,7 @@ class _LandingState extends State<Landing> {
                     await launch(
                         "https://www.coingecko.com/en/api/documentation");
                   },
-                  icon: Text("Powered by"),
+                  icon: const Text("Powered by"),
                   label: Image.asset("assets/images/coingecko_logo.png",
                       height: 50, width: 120),
                   backgroundColor: Colors.green,
@@ -146,7 +146,7 @@ class _LandingState extends State<Landing> {
 
   Card _buildCard(Asset asset, BuildContext context) {
     return Card(
-      color: Color.fromARGB(255, 46, 59, 66),
+      color: const Color.fromARGB(255, 46, 59, 66),
       shadowColor: Colors.white,
       child: ExpansionTile(
         leading: Image.network(
@@ -163,11 +163,11 @@ class _LandingState extends State<Landing> {
           detailSection(asset),
           
           Padding(
-            padding: EdgeInsets.fromLTRB(200, 10, 0, 10),
+            padding: const EdgeInsets.fromLTRB(200, 10, 0, 10),
             child: OutlinedButton(
                 style: OutlinedButton.styleFrom(
                     primary: Colors.greenAccent,
-                    side: BorderSide(color: Colors.greenAccent)),
+                    side: const BorderSide(color: Colors.greenAccent)),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -183,19 +183,15 @@ class _LandingState extends State<Landing> {
   }
 
   Row detailSection(Asset asset) {
-    double marketCap = asset.marketCap;
     double currentPrice = asset.currentPrice;
-    double totalVolume = asset.totalVolume;
-    double circulatingSupply = asset.circulatingSupply;
     double high24hr = asset.high24hr;
     double low24hr = asset.low24hr;
-    int marketCapRank = asset.marketCapRank;
     double priceChange24hr = asset.priceChange24hr;
     Color color = Colors.greenAccent;
     String operator = "+";
     int decimalPoint = 5;
     if (priceChange24hr < 0) {
-      color = Color.fromARGB(255, 250, 66, 66);
+      color = const Color.fromARGB(255, 250, 66, 66);
       operator = "";
     }
     if (currentPrice > 1) {
@@ -205,7 +201,7 @@ class _LandingState extends State<Landing> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: Column(
             children: [
               Text("${currentPrice.toStringAsFixed(decimalPoint)} ฿",
@@ -214,7 +210,7 @@ class _LandingState extends State<Landing> {
               Row(
                 children: [
                   Text("≈ ${currentPrice.toStringAsFixed(decimalPoint - 2)}   ",
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.blueGrey, fontWeight: FontWeight.bold)),
                   Text(
                     "$operator${priceChange24hr.toStringAsFixed(3)} %",
@@ -226,25 +222,25 @@ class _LandingState extends State<Landing> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: Column(
             children: [
               Row(
                 children: [
-                  Text("24High:        ",
+                  const Text("24High:        ",
                       style: TextStyle(
                           color: Colors.blueGrey, fontWeight: FontWeight.bold)),
                   Text("${high24hr.toStringAsFixed(3)}",
-                      style: TextStyle(color: Colors.white))
+                      style: const TextStyle(color: Colors.white))
                 ],
               ),
               Row(
                 children: [
-                  Text("24Low:        ",
+                  const Text("24Low:        ",
                       style: TextStyle(
                           color: Colors.blueGrey, fontWeight: FontWeight.bold)),
                   Text("${low24hr.toStringAsFixed(3)}",
-                      style: TextStyle(color: Colors.white))
+                      style: const TextStyle(color: Colors.white))
                 ],
               ),
             ],
@@ -263,7 +259,7 @@ class _LandingState extends State<Landing> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
           
-          Padding(
+          const Padding(
               padding: EdgeInsets.fromLTRB(50, 0, 40, 0),
               child: Text(
                 "Money: ",
@@ -275,9 +271,9 @@ class _LandingState extends State<Landing> {
             width: 200,
             child: TextField(
               keyboardType: TextInputType.number,
-              style: TextStyle(color: Colors.greenAccent),
+              style: const TextStyle(color: Colors.greenAccent),
               controller: money,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 suffixIcon: Icon(Icons.currency_exchange),
                 contentPadding: EdgeInsets.all(5),
                 filled: true,
@@ -289,11 +285,11 @@ class _LandingState extends State<Landing> {
           )
         ]),
         Padding(
-          padding: EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            Padding(
+            const Padding(
                 padding: EdgeInsets.fromLTRB(50, 0, 30, 0),
                 child: Text(
                   "Provider: ",
@@ -303,7 +299,7 @@ class _LandingState extends State<Landing> {
             Container(
                 height: 40,
                 width: 200,
-                decoration: BoxDecoration(color: Colors.greenAccent),
+                decoration: const BoxDecoration(color: Colors.greenAccent),
                 child: DropdownButton(
                   items: items.map((String items) {
                     return DropdownMenuItem(
@@ -322,7 +318,7 @@ class _LandingState extends State<Landing> {
           ]),
         ),
         Padding(
-            padding: EdgeInsets.only(top: 70),
+            padding: const EdgeInsets.only(top: 70),
             child: SizedBox(
                 height: 50,
                 width: 100,
@@ -341,15 +337,15 @@ class _LandingState extends State<Landing> {
                       null
                     }
                   },
-                  style: ButtonStyle(
+                  style: const ButtonStyle(
                     backgroundColor:
                         MaterialStatePropertyAll<Color>(Colors.greenAccent),
                   ),
-                  child: Text("Start Arbitrage",
+                  child: const Text("Start Arbitrage",
                       style: TextStyle(color: Color.fromARGB(255, 14, 34, 53))),
                 ))),
         Padding(
-            padding: EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 20),
             child: SizedBox(
                 height: 50,
                 width: 300,
@@ -360,11 +356,11 @@ class _LandingState extends State<Landing> {
                       MaterialPageRoute(builder: (context) => DashBoard()),
                     )
                   },
-                  style: ButtonStyle(
+                  style: const ButtonStyle(
                     backgroundColor:
                         MaterialStatePropertyAll<Color>(Colors.blueGrey),
                   ),
-                  child: Text("View my stat",
+                  child: const Text("View my stat",
                       style: TextStyle(color: Colors.greenAccent)),
                 )))
       ],

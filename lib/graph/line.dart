@@ -87,13 +87,13 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: Color(0x11FFFFFF),
+            color: const Color(0x11FFFFFF),
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: Color(0x11FFFFFF),
+            color: const Color(0x11FFFFFF),
             strokeWidth: 1,
           );
         },
