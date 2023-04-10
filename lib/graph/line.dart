@@ -33,20 +33,7 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
       color: Color(0xff7589a2)
     );
     Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
+    text = Text('${value.toInt()}',style: style);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -60,21 +47,7 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
       fontSize: 15,
       color: Color(0xff7589a2)
     );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10K';
-        break;
-      case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
-        break;
-      default:
-        return Container();
-    }
-
+    String text = '${value.toInt()}M';
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
@@ -117,7 +90,7 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
+            interval: 5,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 42,
           ),
@@ -127,10 +100,10 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 0,
-      maxX: 11,
+      minX: 1,
+      maxX: 12,
       minY: 0,
-      maxY: 6,
+      maxY: 10,
       lineBarsData: [
         LineChartBarData(
           spots: spots,

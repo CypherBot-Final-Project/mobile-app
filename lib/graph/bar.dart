@@ -93,9 +93,9 @@ Widget leftTitles(double value, TitleMeta meta) {
     const style = TextStyle(
       color: Color(0xff7589a2),
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 10,
     );
-    String text = '${value.toInt()}k';
+    String text = '${value.toInt()} M';
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 0,

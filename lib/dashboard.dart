@@ -18,6 +18,7 @@ class _DashBoardState extends State<DashBoard> {
   late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
   late List<FlSpot> spots;
+  late String maxDigit;
   bool isLoading = false;
 
   @override
@@ -97,7 +98,7 @@ class _DashBoardState extends State<DashBoard> {
     ];
     List<FlSpot> spot = [];
 
-    var now = DateTime.now();
+    var now = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateTime.now()));
     var day = checkDate(DateFormat("EEEE").format(now)) * -1;
     var start = now.add(Duration(days: day));
 
@@ -107,18 +108,19 @@ class _DashBoardState extends State<DashBoard> {
     for (var stat in stats){
       var time = DateTime.parse(stat["createAt"]);
       var month = time.month;
-      var y = month + (day * 0.01);
+      var d = time.day;
+      var y = month + (d * 0.01);
       var weekday = DateFormat("EEEE").format(time);
-      var maxInit = pow(10,stat["maxInit"].toInt().toString().length);
-      var maxProfit = pow(10,stat["maxProfit"].toInt().toString().length);
-      if (time.compareTo(now) <= 0 && time.compareTo(start) >= 0){
-        items[checkDate(weekday)] = makeGroupData(checkDate(weekday), stat["initialMoney"]/maxInit, (stat["initialMoney"]+stat["profit"])/maxInit);
+      if ((time.compareTo(now) <= 0 && time.compareTo(start) >= 0)){
+        items[checkDate(weekday)] = makeGroupData(checkDate(weekday), stat["initialMoney"]/1000000, (stat["initialMoney"]+stat["profit"])/1000000);
+        
       }
-      spot.add(FlSpot(y, stat["profit"]/maxProfit));
+      spot.add(FlSpot(y,stat["profit"]/1000000));
 
     }
     showingBarGroups = items;
     spots = spot;
+    
 
     setState(() => isLoading = false);
   }
